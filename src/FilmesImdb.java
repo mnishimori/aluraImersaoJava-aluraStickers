@@ -67,16 +67,20 @@ public class FilmesImdb {
                 // Exibir os dados recuperados
                 GeradorDeFigurinhas geradorDeFigurinhas = new GeradorDeFigurinhas();
 
+                int sequence = 0;
                 for (Map<String, String> filme: listaDeFilmes){
                     try {
                         String fileName = filme.get("title");
                         String imageUrl = filme.get("image");
+                        String rating = "⭐".repeat((int) Math.floor(Double.parseDouble(filme.get("imDbRating"))));
                         InputStream is = new URL(imageUrl).openStream();
-                        geradorDeFigurinhas.criarFigurinha(is, fileName);
+                        geradorDeFigurinhas.criarFigurinha(is, fileName, rating);
 
+                        sequence = ++sequence;
+                        System.out.print(sequence + "-");
                         System.out.println(fileName);
                         System.out.print(filme.get("imDbRating") + " ");
-                        System.out.println("⭐".repeat((int) Math.floor(Double.parseDouble(filme.get("imDbRating")))));
+                        System.out.println(rating);
                         System.out.println(imageUrl);
                         System.out.println("");
                     } catch (Exception e) {
