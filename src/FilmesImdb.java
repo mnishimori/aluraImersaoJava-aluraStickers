@@ -1,7 +1,9 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -63,12 +65,23 @@ public class FilmesImdb {
                 List<Map<String, String>> listaDeFilmes = jsonParser.parser(body);
 
                 // Exibir os dados recuperados
+                GeradorDeFigurinhas geradorDeFigurinhas = new GeradorDeFigurinhas();
+
                 for (Map<String, String> filme: listaDeFilmes){
-                    System.out.println(filme.get("title"));
-                    System.out.print(filme.get("imDbRating") + " ");
-                    System.out.println("⭐".repeat((int) Math.floor(Double.parseDouble(filme.get("imDbRating")))));
-                    System.out.println(filme.get("image"));
-                    System.out.println("");
+                    try {
+                        String fileName = filme.get("title");
+                        String imageUrl = filme.get("image");
+                        InputStream is = new URL(imageUrl).openStream();
+                        geradorDeFigurinhas.criarFigurinha(is, fileName);
+
+                        System.out.println(fileName);
+                        System.out.print(filme.get("imDbRating") + " ");
+                        System.out.println("⭐".repeat((int) Math.floor(Double.parseDouble(filme.get("imDbRating")))));
+                        System.out.println(imageUrl);
+                        System.out.println("");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 errorMessage = "Nenhum dado a ser impresso!";
