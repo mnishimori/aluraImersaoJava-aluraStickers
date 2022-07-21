@@ -19,7 +19,7 @@ public class ClientHttp {
                     HttpResponse.BodyHandlers.ofString());
             body = response.body();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Não existe conteúdo na URL " + url);
+            throw new UrlNotFoundException("Não existe conteúdo na URL " + url);
         }
 
         return body;
