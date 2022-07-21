@@ -22,12 +22,9 @@ public class GeradorDeFigurinhas {
 
     }
 
-    public void criarFigurinha(InputStream is, String fileName, String rating) throws Exception {
+    public void criarFigurinha(InputStream is, String fileName) throws IOException {
         // leitura da imagem original
-        // InputStream is = new FileInputStream(new File("./entrada/filme.jpg"));
-        // InputStream is = new URL("https://imersao-java-apis.s3.amazonaws.com/TopMovies_2.jpg").openStream();
         BufferedImage originalImage = ImageIO.read(is);
-
         // cria a nova imagem em memória com transparência e novo tamanho
         int newHeight = originalImage.getHeight() + 200;
         BufferedImage newImage = new BufferedImage(originalImage.getWidth(), newHeight, BufferedImage.TRANSLUCENT);
@@ -44,7 +41,8 @@ public class GeradorDeFigurinhas {
                 graphics.setColor(Color.yellow);
                 graphics.setFont(font);
 
-                TextLayout textLayout = new TextLayout(rating, graphics.getFont(), graphics.getFontRenderContext());
+                String title = "Imersão Java";
+                TextLayout textLayout = new TextLayout(title, graphics.getFont(), graphics.getFontRenderContext());
                 double textHeight = newHeight-100;
                 double textWidth = textLayout.getBounds().getWidth();
 
@@ -52,10 +50,8 @@ public class GeradorDeFigurinhas {
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
                 // Draw the text in the center of the image
-                graphics.drawString(rating, originalImage.getWidth() / 2 - (int) textWidth / 2,
+                graphics.drawString(title, originalImage.getWidth() / 2 - (int) textWidth / 2,
                         newHeight / 2 + (int) textHeight / 2);
-
-                //graphics.drawString(rating, 190, newHeight-100);
 
                 // salva a nova imagem em um arquivo
                 File directory = new File("./saida");
