@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ContentExtractorNasa implements ContentExtractor {
 
@@ -12,14 +13,10 @@ public class ContentExtractorNasa implements ContentExtractor {
 
         List<Content> contentList = new ArrayList<>();
         if (attributesList != null && !attributesList.isEmpty()) {
-            String fileName = "";
-            String imageUrl = "";
 
-            for (Map<String, String> conteudo: attributesList){
-                fileName = conteudo.get("title");
-                imageUrl = conteudo.get("url");
-                contentList.add(new Content(fileName, imageUrl));
-            }
+            contentList = attributesList.stream().map(a -> {
+                return new Content(a.get("title"), a.get("url"));
+            }).collect(Collectors.toList());
         }
 
         return contentList;
